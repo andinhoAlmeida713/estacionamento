@@ -1,0 +1,107 @@
+/* ==========================================================================
+   CONFIGURAÇÕES DE ESTILO PARA A TELA DE LOGIN (login.html)
+   ========================================================================== */
+
+/* Aplica o fundo degradê e centraliza o card apenas na página de login */
+body:has(.login-container) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Card centralizado do formulário */
+.login-container {
+    background-color: #ffffff;
+    padding: 2.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Título Principal */
+.login-container h1 {
+    color: #1e3c72;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+/* Subtítulo */
+.login-container p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+}
+
+/* Estrutura do Formulário */
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+/* Rótulos dos campos (Usuário e Senha) */
+.login-container label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #444;
+    font-size: 0.9rem;
+}
+
+/* Campos de entrada de texto e senha */
+.login-container input {
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* Efeito azul ao clicar ou focar no campo */
+.login-container input:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.2);
+}
+
+/* Botão Entrar */
+.login-container button {
+    background-color: #1e3c72;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-top: 0.5rem;
+}
+
+/* Efeito de hover no botão */
+.login-container button:hover {
+    background-color: #2a5298;
+}
+
+/* Caixa de Alerta para "Usuário ou senha inválidos" */
+.mensagem.erro {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 1.25rem;
+    border: 1px solid #f5c6cb;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+}

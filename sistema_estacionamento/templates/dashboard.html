@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Estacionamento</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+</head>
+<body>
+    <header class="barra-superior">
+        <div class="usuario-info">
+            <h2>Sistema de Estacionamento</h2>
+            <p>Bem-vindo, <strong>{{ current_user.nome }}</strong> ({{ current_user.perfil | capitalize }})</p>
+        </div>
+        <div class="acoes-usuario">
+            {% if area_admin %}
+                <span class="badge admin">Painel Administrativo</span>
+            {% endif %}
+            <a href="{{ url_for('sair') }}" class="btn-sair">Sair</a>
+        </div>
+    </header>
+
+    <div class="container-principal">
+        <!-- Bloco de Alertas Rápidos do Flask -->
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% if mensagens %}
+                {% for categoria, mensagem in mensagens %}
+                    <div class="alerta {{ categoria }}">
+                        {{ mensagem }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Seção 1: Movimentações Ativas no Pátio (Check-ins em aberto) -->
+        <section class="secao-dashboard">
+            <h3>🚗 Veículos Atuais no Pátio (Movimentações Ativas)</h3>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Entrada em</th>
+                            <th>Tipo de Cobrança</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if movimentacoes %}
+                            {% for mov in movimentacoes %}
+                                <tr>
+                                    <td><span class="placa-veiculo">{{ mov.placa }}</span></td>
+                                    <td>{{ mov.entrada_em }}</td>
+                                    <td>{{ mov.tipo_cobranca | capitalize }}</td>
+                                    <td><span class="status aberta">{{ mov.status }}</span></td>
+                                    <td>
+                                        <form method="POST" action="#" style="display:inline;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn-acao registrar-saida">Registrar Saída</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="sem-dados">Nenhum veículo estacionado no pátio neste momento.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Seção 2: Frota Geral de Veículos Cadastrados -->
+        <section class="secao-dashboard">
+            <h3>📋 Frota de Veículos Cadastrados</h3>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Marca / Modelo</th>
+                            <th>Cor</th>
+                            <th>Tipo</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if veiculos %}
+                            {% for veiculo in veiculos %}
+                                <tr>
+                                    <td><span class="placa-veiculo">{{ veiculo.placa }}</span></td>
+                                    <td>{{ veiculo.marca or '-' }} {{ veiculo.modelo or '' }}</td>
+                                    <td>{{ veiculo.cor or '-' }}</td>
+                                    <td>{{ veiculo.tipo | capitalize }}</td>
+                                    <td>
+                                        <button class="btn-acao iniciar-entrada">Iniciar Entrada</button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="sem-dados">Nenhum veículo cadastrado no sistema para este estacionamento.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
