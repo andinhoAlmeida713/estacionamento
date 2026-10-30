@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Veículo e Cliente - Estacionamento</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/cadastro_veiculo.css">
+</head>
+<body>
+    <header class="barra-superior">
+        <div class="usuario-info">
+            <h2>Sistema de Estacionamento</h2>
+            <p>Novo Cadastro no Sistema</p>
+        </div>
+        <div class="acoes-usuario">
+            <a href="{{ url_for('dashboard') }}" class="btn-voltar">Voltar ao Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container-cadastro">
+        <form method="POST" action="#">
+            <!-- Token de proteção obrigatório do Flask contra ataques CSRF -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+            <div class="grid-cadastro">
+                <!-- COLUNA 1: DADOS DO VEÍCULO -->
+                <div class="card-cadastro">
+                    <h3>🚗 Informações do Veículo</h3>
+                    
+                    <div class="campo-grupo">
+                        <label for="placa">Placa (Obrigatório)</label>
+                        <input id="placa" name="placa" type="text" max_length="10" placeholder="Ex: ABC1234" required>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="tipo">Tipo de Veículo</label>
+                        <select id="tipo" name="tipo" required>
+                            <option value="carro" selected>Carro</option>
+                            <option value="moto">Moto</option>
+                            <option value="utilitario">Utilitário</option>
+                            <option value="caminhao">Caminhão</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-grupo-duplo">
+                        <div class="campo-grupo">
+                            <label for="marca">Marca</label>
+                            <input id="marca" name="marca" type="text" placeholder="Ex: Chevrolet">
+                        </div>
+                        <div class="campo-grupo">
+                            <label for="modelo">Modelo</label>
+                            <input id="modelo" name="modelo" type="text" placeholder="Ex: Onix">
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo-duplo">
+                        <div class="campo-grupo">
+                            <label for="cor">Cor</label>
+                            <input id="cor" name="cor" type="text" placeholder="Ex: Preto">
+                        </div>
+                        <div class="campo-grupo">
+                            <label for="ano">Ano</label>
+                            <input id="ano" name="ano" type="number" min="1900" max="2030" placeholder="Ex: 2022">
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="observacoes_veiculo">Observações do Veículo</label>
+                        <textarea id="observacoes_veiculo" name="observacoes_veiculo" rows="3" placeholder="Ex: Detalhes de avarias ou riscos pré-existentes..."></textarea>
+                    </div>
+                </div>
+
+                <!-- COLUNA 2: DADOS DO PROPRIETÁRIO / CLIENTE (OPCIONAL) -->
+                <div class="card-cadastro">
+                    <h3>👤 Proprietário / Cliente <span class="opcional">(Opcional)</span></h3>
+                    
+                    <div class="campo-grupo">
+                        <label for="nome_cliente">Nome do Cliente</label>
+                        <input id="nome_cliente" name="nome_cliente" type="text" placeholder="Nome completo do proprietário">
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="tipo_pessoa">Tipo de Pessoa</label>
+                        <select id="tipo_pessoa" name="tipo_pessoa">
+                            <option value="fisica" selected>Pessoa Física (CPF)</option>
+                            <option value="juridica">Pessoa Jurídica (CNPJ)</option>
+                        </select>
+                    </div>
+
+                    <div class="campo-grupo-duplo">
+                        <div class="campo-grupo">
+                            <label for="documento">CPF / CNPJ</label>
+                            <input id="documento" name="documento" type="text" placeholder="Apenas números">
+                        </div>
+                        <div class="campo-grupo">
+                            <label for="telefone">Telefone</label>
+                            <input id="telefone" name="telefone" type="tel" placeholder="Ex: (49) 99999-0000">
+                        </div>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="email">E-mail</label>
+                        <input id="email" name="email" type="email" placeholder="cliente@email.com">
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label for="observacoes_cliente">Observações do Cliente</label>
+                        <textarea id="observacoes_cliente" name="observacoes_cliente" rows="3" placeholder="Ex: Cliente Mensalista, restrições de horários, etc..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botão de submissão centralizado abaixo dos dois blocos -->
+            <div class="container-acoes-fim">
+                <button type="submit" class="btn-salvar-cadastro">Salvar Cadastro no Sistema</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

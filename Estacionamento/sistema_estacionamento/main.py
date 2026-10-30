@@ -18,11 +18,13 @@ from app.core import SecurityManager
 # Serviço de integração para consumir a API do FastAPI via Requests
 from services import EstacionamentoService
 
+# Carrega as variáveis do arquivo .env
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='/static')
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 
+# Ativa a proteção contra ataques CSRF nos formulários
 csrf = CSRFProtect(app)
 
 FASTAPI_URL = os.getenv("FASTAPI_URL", "http://127.0.0.1:8000")
@@ -48,6 +50,7 @@ def conectar_banco():
     )
 
 
+# Configuração do Gerenciador de Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = "login"
@@ -82,6 +85,8 @@ def carregar_usuario(usuario_id):
             if dados:
                 return Usuario(dados)
             return None
+    except Exception:
+        return None
     finally:
         conexao.close()
 
@@ -102,6 +107,7 @@ def login():
             return render_template("login.html")
 
         conexao = conectar_banco()
+        dados = None
         try:
             with conexao.cursor() as cursor:
                 cursor.execute(
@@ -115,6 +121,9 @@ def login():
                     (usuario_login,),
                 )
                 dados = cursor.fetchone()
+        except Exception as e:
+            flash("Erro de conexão com o banco de dados.", "erro")
+            return render_template("login.html")
         finally:
             conexao.close()
 
@@ -127,7 +136,7 @@ def login():
             usuario = Usuario(dados)
             login_user(usuario)
 
-            # Registra o timestamp do último acesso na tabela usuarios de forma limpa
+            # Registra o timestamp do último acesso na tabela usuarios
             conexao = conectar_banco()
             try:
                 with conexao.cursor() as cursor:
@@ -136,10 +145,11 @@ def login():
                         (dados["id"],),
                     )
                 conexao.commit()
+            except Exception:
+                pass
             finally:
                 conexao.close()
 
-            # Controle de Acesso Baseado em Perfis (RBAC) para o redirecionamento pós-login
             if usuario.perfil == "administrador":
                 return redirect(url_for("admin"))
             return redirect(url_for("dashboard"))
@@ -153,8 +163,6 @@ def login():
 @login_required
 def dashboard():
     estacionamento_id = current_user.estacionamento_id
-    
-    # Consome os microsserviços integrados ao FastAPI de forma assíncrona para a interface
     veiculos = EstacionamentoService.buscar_veiculos(estacionamento_id)
     movimentacoes = EstacionamentoService.buscar_movimentacoes_ativas(estacionamento_id)
     
@@ -166,6 +174,83 @@ def dashboard():
     )
 
 
+@app.route("/movimentacoes/checkout/<int:movimentacao_id>", methods=["GET", "POST"])
+@login_required
+def checkout(movimentacao_id):
+    # Dicionários simulados temporários para renderização segura
+    movimentacao_mock = {
+        "id": movimentacao_id,
+        "placa": "ABC1234",
+        "entrada_em": "29/10/2026 14:00:00",
+        "valor_calculado": "15.00",
+        "valor_cobrado": "15.00"
+    }
+    veiculo_mock = {
+        "marca": "Chevrolet",
+        "modelo": "Onix",
+        "cor": "Preto",
+        "tipo": "carro"
+    }
+
+    if request.method == "POST":
+        desconto = request.form.get("desconto", "0.00")
+        forma_pagamento = request.form.get("forma_pagamento")
+        
+        # Futura integração: EstacionamentoService.registrar_saida(movimentacao_id, desconto)
+        flash("Pagamento processado e movimentação finalizada com sucesso!", "sucesso")
+        return redirect(url_for("dashboard"))
+
+    return render_template(
+        "checkout.html",
+        movimentacao=movimentacao_mock,
+        veiculo=veiculo_mock,
+        horario_saida_atual="29/10/2026 15:15:00",
+        tempo_decorrido_formatado="01h 15min"
+    )
+
+
+# ==========================================================================
+# ROTA ADICIONADA: Tela de Cadastro Operacional de Veículos e Clientes
+# ==========================================================================
+@app.route("/veiculos/cadastrar", methods=["GET", "POST"])
+@login_required
+def cadastrar_veiculo_tela():
+    if request.method == "POST":
+        placa = request.form.get("placa")
+        
+        # Futura integração com o endpoint POST do FastAPI que criamos
+        flash(f"Veículo de placa {placa} cadastrado com sucesso!", "sucesso")
+        return redirect(url_for("dashboard"))
+
+    return render_template("cadastro_veiculo.html")
+
+
+# ==========================================================================
+# ROTA ADICIONADA: Painel Gerencial de Faturamento e Fechamento de Caixa
+# ==========================================================================
+@app.route("/gerencial/faturamento", methods=["GET"])
+@login_required
+def faturamento_tela():
+    # Proteção de Perfil: Apenas administradores acessam o faturamento bruto
+    if current_user.perfil != "administrador":
+        flash("Você não tem permissão para acessar essa área.", "erro")
+        return redirect(url_for("dashboard"))
+
+    # Dicionários estruturados simulados para alimentar os KPIs do HTML
+    resumo_mock = {
+        "total": "1.450,00",
+        "pix": "820,00",
+        "dinheiro": "380,00",
+        "cartao": "250,00"
+    }
+    
+    return render_template(
+        "faturamento.html",
+        resumo=resumo_mock,
+        historico=[]  # Carrega dados do bloco "else" do HTML para fins de teste
+    )
+
+
 @app.route("/admin")
 @login_required
 def admin():
@@ -174,7 +259,6 @@ def admin():
         return redirect(url_for("dashboard"))
 
     estacionamento_id = current_user.estacionamento_id
-    
     veiculos = EstacionamentoService.buscar_veiculos(estacionamento_id)
     movimentacoes = EstacionamentoService.buscar_movimentacoes_ativas(estacionamento_id)
 
@@ -195,4 +279,5 @@ def sair():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    porta = int(os.getenv("FLASK_PORT", 5000))
+    app.run(debug=True, port=porta)

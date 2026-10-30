@@ -1,0 +1,182 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS DO PAINEL PRINCIPAL (dashboard.html)
+   ========================================================================== */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* Container de Layout */
+.container-principal {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Barra Superior (Header) */
+.barra-superior {
+    background-color: #1e3c72;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.usuario-info h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.usuario-info p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.acoes-usuario {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Badges de Identificação */
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.badge.admin {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+/* Links e Botões Globais */
+.btn-sair {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-sair:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Estrutura das Seções e Tabelas */
+.secao-dashboard {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.secao-dashboard h3 {
+    margin-top: 0;
+    color: #1e3c72;
+    border-bottom: 2px solid #f4f6f9;
+    padding-bottom: 0.75rem;
+}
+
+.tabela-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+}
+
+th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+}
+
+/* Identificadores Visuais dentro da Tabela */
+.placa-veiculo {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    background-color: #e9ecef;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    border: 1px solid #ced4da;
+}
+
+.status {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.status.aberta {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* Botões de Ação na Tabela */
+.btn-acao {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-acao.registrar-saida {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-acao.registrar-saida:hover {
+    background-color: #bd2130;
+}
+
+.btn-acao.iniciar-entrada {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-acao.iniciar-entrada:hover {
+    background-color: #218838;
+}
+
+.sem-dados {
+    text-align: center;
+    color: #6c757d;
+    padding: 2rem !important;
+}
+
+/* Alertas Gerais do Flask */
+.alerta {
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    border-radius: 4px;
+    border: 1px solid transparent;
+}
+.alerta.sucesso {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faturamento e Caixa - Sistema de Estacionamento</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/faturamento.css">
+</head>
+<body>
+    <header class="barra-superior">
+        <div class="usuario-info">
+            <h2>Sistema de Estacionamento</h2>
+            <p>Painel Gerencial de Faturamento</p>
+        </div>
+        <div class="acoes-usuario">
+            <a href="{{ url_for('dashboard') }}" class="btn-voltar">Voltar ao Dashboard</a>
+        </div>
+    </header>
+
+    <main class="container-faturamento">
+        <!-- BLOCO 1: FILTROS DE PESQUISA -->
+        <section class="card-faturamento secao-filtros">
+            <h3>🔍 Filtrar Período</h3>
+            <form method="GET" action="#" class="form-filtros">
+                <div class="campo-filtro">
+                    <label for="data_inicio">Data Inicial</label>
+                    <input id="data_inicio" name="data_inicio" type="date" value="2026-10-01">
+                </div>
+                <div class="campo-filtro">
+                    <label for="data_fim">Data Final</label>
+                    <input id="data_fim" name="data_fim" type="date" value="2026-10-29">
+                </div>
+                <button type="submit" class="btn-filtrar">Aplicar Filtro</button>
+            </form>
+        </section>
+
+        <!-- BLOCO 2: CARDS DE RESUMO FINANCEIRO (KPIs) -->
+        <section class="grid-resumos">
+            <div class="card-resumo total-faturado">
+                <p>Receita Total</p>
+                <strong>R$ {{ resumo['total'] or '1.450,00' }}</strong>
+            </div>
+            <div class="card-resumo faturamento-pix">
+                <p>Recebido via PIX</p>
+                <strong>R$ {{ resumo['pix'] or '820,00' }}</strong>
+            </div>
+            <div class="card-resumo faturamento-dinheiro">
+                <p>Recebido em Dinheiro</p>
+                <strong>R$ {{ resumo['dinheiro'] or '380,00' }}</strong>
+            </div>
+            <div class="card-resumo faturamento-cartao">
+                <p>Cartão (Débito/Crédito)</p>
+                <strong>R$ {{ resumo['cartao'] or '250,00' }}</strong>
+            </div>
+        </section>
+
+        <!-- BLOCO 3: TABELA DE HISTÓRICO DE MOVIMENTAÇÕES FINALIZADAS -->
+        <section class="card-faturamento secao-historico">
+            <h3>📋 Histórico de Atendimentos Concluídos</h3>
+            <div class="tabela-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Placa</th>
+                            <th>Entrada</th>
+                            <th>Saída</th>
+                            <th>Cobrança</th>
+                            <th>Forma de Pagto</th>
+                            <th>Valor Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if historico %}
+                            {% for item in historico %}
+                                <tr>
+                                    <td><span class="placa-veiculo">{{ item['placa'] }}</span></td>
+                                    <td>{{ item['entrada_em'] }}</td>
+                                    <td>{{ item['saida_em'] }}</td>
+                                    <td>{{ item['tipo_cobranca'] | capitalize }}</td>
+                                    <td><span class="badge-pagto">{{ item['forma_pagamento'] | capitalize }}</span></td>
+                                    <td class="valor-pago">R$ {{ item['valor_cobrado'] }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <!-- Dados simulados para você ver o visual montado antes do FastAPI mandar a lista real -->
+                            <tr>
+                                <td><span class="placa-veiculo">ABC1234</span></td>
+                                <td>29/10/2026 14:00</td>
+                                <td>29/10/2026 15:15</td>
+                                <td>Hora</td>
+                                <td><span class="badge-pagto pix">Pix</span></td>
+                                <td class="valor-pago">R$ 15,00</td>
+                            </tr>
+                            <tr>
+                                <td><span class="placa-veiculo">XYZ5678</span></td>
+                                <td>29/10/2026 08:30</td>
+                                <td>29/10/2026 18:00</td>
+                                <td>Diária</td>
+                                <td><span class="badge-pagto dinheiro">Dinheiro</span></td>
+                                <td class="valor-pago">R$ 45,00</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

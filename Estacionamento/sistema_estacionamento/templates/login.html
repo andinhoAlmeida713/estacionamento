@@ -4,32 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Estacionamento</title>
-    <link rel="stylesheet" href="../static/css/estilo.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/login.css">
 </head>
 <body>
     <main class="login-container">
         <h1>Estacionamento</h1>
         <p>Acesse sua conta</p>
 
-        <!-- O Flask vai processar este bloco e ele só vai aparecer se houver um erro real de senha -->
-        {% with mensagens = get_flashed_messages(with_categories=true) %}
-            {% if mensagens %}
-                {% for categoria, mensagem in mensagens %}
+       
                     <div class="mensagem {{ categoria }}">
-                        {{ mensagem }}
+                       
                     </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+              
 
         <form method="POST" action="{{ url_for('login') }}">
+            <!-- Token de proteção obrigatório contra CSRF -->
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
             <label for="login">Usuário</label>
-            <input id="login" name="login" type="text" autocomplete="username" required>
+            <input id="login" name="login" type="text" placeholder="Digite seu usuário" autocomplete="username" required>
 
             <label for="senha">Senha</label>
-            <input id="senha" name="senha" type="password" autocomplete="current-password" required>
+            <input id="senha" name="senha" type="password" placeholder="Digite sua senha" autocomplete="current-password" required>
 
             <button type="submit">Entrar</button>
         </form>

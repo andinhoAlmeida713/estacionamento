@@ -1,0 +1,167 @@
+/* ==========================================================================
+   ESTILOS EXCLUSIVOS DA TELA DE CADASTRO (cadastro_veiculo.css)
+   ========================================================================== */
+
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f9;
+    color: #333;
+}
+
+/* Barra Superior */
+.barra-superior {
+    background-color: #1e3c72;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.usuario-info h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.usuario-info p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.btn-voltar {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid white;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.btn-voltar:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Layout Principal em Grade Lateral */
+.container-cadastro {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
+}
+
+.grid-cadastro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+/* Cards de Formulário */
+.card-cadastro {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.card-cadastro h3 {
+    margin-top: 0;
+    color: #1e3c72;
+    border-bottom: 2px solid #f4f6f9;
+    padding-bottom: 0.6rem;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.card-cadastro h3 .opcional {
+    font-size: 0.85rem;
+    color: #888;
+    font-weight: normal;
+}
+
+/* Estrutura de Campos */
+.campo-grupo {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem;
+}
+
+.campo-grupo label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.campo-grupo input, 
+.campo-grupo select,
+.campo-grupo textarea {
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #fff;
+    color: #333;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: inherit;
+}
+
+.campo-grupo input:focus,
+.campo-grupo select:focus,
+.campo-grupo textarea:focus {
+    border-color: #2a5298;
+    box-shadow: 0 0 0 3px rgba(42, 82, 152, 0.15);
+}
+
+/* Campos Lado a Lado (Duplos) */
+.campo-grupo-duplo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Container de Envio no Fim da Página */
+.container-acoes-fim {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.btn-salvar-cadastro {
+    background-color: #1e3c72;
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.btn-salvar-cadastro:hover {
+    background-color: #2a5298;
+}
+
+.btn-salvar-cadastro:active {
+    transform: scale(0.98);
+}
+
+/* Adaptação para Celulares e Monitores Pequenos */
+@media (max-width: 900px) {
+    .grid-cadastro {
+        grid-template-columns: 1fr;
+    }
+    .container-acoes-fim {
+        text-align: center;
+    }
+    .btn-salvar-cadastro {
+        width: 100%;
+    }
+}

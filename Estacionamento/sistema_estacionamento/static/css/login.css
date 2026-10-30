@@ -1,17 +1,17 @@
 /* ==========================================================================
-   CONFIGURAÇÕES DE ESTILO PARA A TELA DE LOGIN (login.html)
+   ESTILOS EXCLUSIVOS DA TELA DE LOGIN (login.html)
    ========================================================================== */
 
-/* Aplica o fundo degradê e centraliza o card apenas na página de login */
-body:has(.login-container) {
+/* Ajuste Global Base para Centralização */
+html, body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Card centralizado do formulário */

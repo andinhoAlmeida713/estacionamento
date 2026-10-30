@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Sistema de Estacionamento</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/estilo.css') }}">
+    <link rel="stylesheet" type="text/css" href="../static/css/dashboard.css">
 </head>
 <body>
     <header class="barra-superior">
@@ -32,7 +32,7 @@
             {% endif %}
         {% endwith %}
 
-        <!-- Seção 1: Movimentações Ativas no Pátio (Check-ins em aberto) -->
+        <!-- Seção 1: Movimentações Ativas no Pátio -->
         <section class="secao-dashboard">
             <h3>🚗 Veículos Atuais no Pátio (Movimentações Ativas)</h3>
             <div class="tabela-wrapper">
@@ -50,13 +50,13 @@
                         {% if movimentacoes %}
                             {% for mov in movimentacoes %}
                                 <tr>
-                                    <td><span class="placa-veiculo">{{ mov.placa }}</span></td>
-                                    <td>{{ mov.entrada_em }}</td>
-                                    <td>{{ mov.tipo_cobranca | capitalize }}</td>
-                                    <td><span class="status aberta">{{ mov.status }}</span></td>
+                                    <td><span class="placa-veiculo">{{ mov['placa'] or 'ABC1234' }}</span></td>
+                                    <td>{{ mov['entrada_em'] }}</td>
+                                    <td>{{ (mov['tipo_cobranca'] or 'hora') | capitalize }}</td>
+                                    <td><span class="status aberta">{{ mov['status'] | capitalize }}</span></td>
                                     <td>
-                                        <form method="POST" action="#" style="display:inline;">
-                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <!-- Formulário GET redirecionando dinamicamente para a tela de Check-out usando o ID -->
+                                        <form method="GET" action="{{ url_for('checkout', movimentacao_id=mov['id']) }}" style="display:inline;">
                                             <button type="submit" class="btn-acao registrar-saida">Registrar Saída</button>
                                         </form>
                                     </td>
@@ -90,10 +90,10 @@
                         {% if veiculos %}
                             {% for veiculo in veiculos %}
                                 <tr>
-                                    <td><span class="placa-veiculo">{{ veiculo.placa }}</span></td>
-                                    <td>{{ veiculo.marca or '-' }} {{ veiculo.modelo or '' }}</td>
-                                    <td>{{ veiculo.cor or '-' }}</td>
-                                    <td>{{ veiculo.tipo | capitalize }}</td>
+                                    <td><span class="placa-veiculo">{{ veiculo['placa'] }}</span></td>
+                                    <td>{{ veiculo['marca'] or '-' }} {{ veiculo['modelo'] or '' }}</td>
+                                    <td>{{ veiculo['cor'] or '-' }}</td>
+                                    <td>{{ veiculo['tipo'] | capitalize }}</td>
                                     <td>
                                         <button class="btn-acao iniciar-entrada">Iniciar Entrada</button>
                                     </td>
